@@ -1,2 +1,3 @@
 node_modules
 build
+preview-build/*.js
