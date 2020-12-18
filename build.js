@@ -4,6 +4,11 @@ const env = {
   "process.env.NODE_ENV": '"development"',
 };
 
+
+const onError = (e)=>{
+  console.error(e);
+  throw new Error(e);
+}
 if (process.argv.includes("--develop")) {
   serve(
     {
@@ -23,7 +28,7 @@ if (process.argv.includes("--develop")) {
         ".html": "file",
       },
     }
-  ).then(console.log, console.error);
+  ).then(console.log, onError);
 } else if (process.argv.includes("--preview")) {
   build({
     entryPoints: ["./preview/main.tsx"],
@@ -34,7 +39,7 @@ if (process.argv.includes("--develop")) {
     target: "es2015",
     format: "esm",
     sourcemap: "inline",
-  }).then(console.log, console.error);
+  }).then(console.log,onError);
 } else {
   build({
     entryPoints: ["./src/index.tsx"],
@@ -48,5 +53,5 @@ if (process.argv.includes("--develop")) {
     target: "es2017",
     format: "esm",
     sourcemap: "external",
-  }).then(console.log, console.error);
+  }).then(console.log, onError);
 }
