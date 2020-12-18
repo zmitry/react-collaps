@@ -7,7 +7,9 @@ import React, {
 } from "react";
 
 interface CollapseProps {
+  // show or hide element
   in: boolean;
+  // max animation duration
   maxDuration?: number;
   // children element should be able to hold a ref on it
   children: ReactElement;
