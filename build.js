@@ -33,14 +33,15 @@ if (process.argv.includes("--develop")) {
     bundle: true,
     target: "es2015",
     format: "esm",
-    serve: true,
     sourcemap: "inline",
   }).then(console.log, console.error);
 } else {
   build({
     entryPoints: ["./src/index.tsx"],
     minify: false,
-    define: env,
+    define: {
+      "process.env.NODE_ENV": '"development"',
+    },
     outfile: "./build/index.js",
     bundle: true,
     external: ["react"],
