@@ -34,8 +34,23 @@ function Accordion({ children }) {
     return React.cloneElement(el, { id });
   });
 }
-
-export default function App() {
+export function Simple() {
+ return <Accordion>
+    <Section title="hello">
+      <img
+        width="500"
+        height="500"
+        src="https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg"
+      ></img>{" "}
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
+      similique, repellendu as dfa sdf as dfa sf as fasds iure earum
+      dolore, assumenda possimus, praesentium quod ut cumque beatae
+      voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
+      aliquam!
+    </Section>
+  </Accordion>
+}
+export function Complex() {
   const [state, setState] = useState(false);
   return (
     <div

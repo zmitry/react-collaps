@@ -1,13 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
+import "react-storyui/src/index.css"
+import { StoryUI, parseModule } from 'react-storyui'
 
-import App from "./App";
+const AppWrapper = (children) => {
+  return <Suspense fallback={"Loading ..."}>{children}</Suspense>;
+};
 
-const rootElement = document.getElementById("root");
-console.log(rootElement)
+let stories = new Map();
+parseModule(require("./App"), stories, "./App", AppWrapper);
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  rootElement
+  <StoryUI stories={stories} />,
+  document.getElementById("root")
 );

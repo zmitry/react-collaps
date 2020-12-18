@@ -9,8 +9,5 @@
     "outDir": "./build",
     "declaration": true,
     "emitDeclarationOnly": true,
-  },
-  "include": [
-    "src/"
-  ]
+  }
 }
