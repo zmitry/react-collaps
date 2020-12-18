@@ -54,9 +54,10 @@ export default function App() {
             src="https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg"
           ></img>{" "}
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
-          similique, repellendus {state}iure earum dolore, assumenda possimus,
-          praesentium quod ut cumque beatae voluptate quidem officia debitis
-          veniam laborum accusantium! Ipsam, aliquam!
+          similique, repellendu as dfa sdf as dfa sf as fasds {state}iure earum
+          dolore, assumenda possimus, praesentium quod ut cumque beatae
+          voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
+          aliquam!
         </Section>
         <Section title="hello">
           nested content
