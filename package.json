@@ -2,6 +2,7 @@
   "name": "react-collaps",
   "version": "1.0.2",
   "main": "build/index.js",
+  "module": "build/index.js",
   "types": "build/index.d.ts",
   "license": "MIT",
   "repository": {
