@@ -29,5 +29,8 @@
   },
   "files": [
     "./build"
-  ]
+  ],
+  "dependencies": {
+    "framer-motion": "^3.1.1"
+  }
 }

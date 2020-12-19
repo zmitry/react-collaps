@@ -9,7 +9,6 @@ const AppWrapper = (children) => {
 
 let stories = new Map();
 parseModule(require("./App"), stories, "./App", AppWrapper);
-
 ReactDOM.render(
   <StoryUI stories={stories} />,
   document.getElementById("root")

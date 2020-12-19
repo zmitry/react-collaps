@@ -1,7 +1,7 @@
 const { build, serve } = require("esbuild");
 
 const env = {
-  "process.env.NODE_ENV": '"development"',
+  "process.env.NODE_ENV": `"${process.env.NODE_ENV || "development"}"`,
 };
 
 
@@ -46,7 +46,7 @@ if (process.argv.includes("--develop")) {
     entryPoints: ["./src/index.tsx"],
     minify: false,
     define: {
-      "process.env.NODE_ENV": '"development"',
+      "process.env.NODE_ENV": '"production"',
     },
     outfile: "./build/index.js",
     bundle: true,
