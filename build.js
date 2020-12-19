@@ -38,6 +38,7 @@ if (process.argv.includes("--develop")) {
     outfile: "./preview-build/index.js",
     bundle: true,
     target: "es2015",
+    metafile: "./preview-build/meta.json",
     format: "esm",
     sourcemap: "inline",
   }).then(console.log,onError);

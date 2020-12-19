@@ -4,8 +4,7 @@ import React, {
     useLayoutEffect,
     useRef,
 } from "react";
-import {Collapse} from "../src/index";
-import {motion, AnimatePresence} from 'framer-motion'
+import {Collapse, Slide} from "../src/index";
 
 const Section = React.forwardRef(function Section(
     {children, title, id, keepMounted}: any,
@@ -29,38 +28,92 @@ const Section = React.forwardRef(function Section(
     );
 });
 
-function SectionMotion({children, title, id, keepMounted}: any) {
-    const [state, setState] = useState(false);
-    return (
-        <>
-            <button
-                style={{width: 200}}
-                onClick={(e) => {
-                    setState((v) => !v);
-                }}
-            >
-                <h4>{title}</h4>
-            </button>
-            <AnimatePresence initial={false}>
-                {state && <motion.div
-                    key="content"
-                    initial="collapsed"
-                    animate="open"
-                    exit="collapsed"
-                    style={{overflow: 'hidden'}}
-                    variants={{
-                        open: {opacity: 1, height: "auto"},
-                        collapsed: {opacity: 0, height: 0}
-                    }}
-                    transition={{duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98]}}
-                >
-                    {children}
-                </motion.div>}
-            </AnimatePresence>
-        </>
-    );
-}
+export function SlideDemo() {
+    const [state, setState] = useState(true);
 
+    return <div>
+        <button onClick={e => setState((v) => !v)}>
+            slide ${state ? 'on' : 'off'}
+        </button>
+        <div style={{width: 100, height: 100, marginLeft: 200, display: 'grid', grid: '1fr 1fr 1fr 1fr', gridGap: 5}}>
+            <Slide in={state} direction="right">
+                <div style={{background: 'red', overflow: 'hidden', height: 100}}>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
+                    similique, repellendu as dfa sdf as dfa sf as fasds iure earum
+                    dolore, assumenda possimus, praesentium quod ut cumque beatae
+                    voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
+                    aliquam!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dolor esse facilis, porro quae
+                    quaerat quidem vitae. Commodi debitis, eius expedita fugit minima molestias omnis. Cumque iste
+                    libero
+                    recusandae vitae.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores molestiae neque temporibus. A
+                    adipisci, amet, corporis cumque ea eius eligendi error incidunt iure necessitatibus nostrum
+                    quibusdam
+                    quisquam quos sequi voluptas!
+
+                </div>
+            </Slide>
+            <Slide in={state} direction="bottom">
+                <div style={{background: 'red', overflow: 'hidden', height: 100}}>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
+                    similique, repellendu as dfa sdf as dfa sf as fasds iure earum
+                    dolore, assumenda possimus, praesentium quod ut cumque beatae
+                    voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
+                    aliquam!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dolor esse facilis, porro quae
+                    quaerat quidem vitae. Commodi debitis, eius expedita fugit minima molestias omnis. Cumque iste
+                    libero
+                    recusandae vitae.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores molestiae neque temporibus. A
+                    adipisci, amet, corporis cumque ea eius eligendi error incidunt iure necessitatibus nostrum
+                    quibusdam
+                    quisquam quos sequi voluptas!
+
+                </div>
+            </Slide>
+
+            <Slide in={state} direction="top">
+                <div style={{background: 'red', overflow: 'hidden', height: 100}}>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
+                    similique, repellendu as dfa sdf as dfa sf as fasds iure earum
+                    dolore, assumenda possimus, praesentium quod ut cumque beatae
+                    voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
+                    aliquam!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dolor esse facilis, porro quae
+                    quaerat quidem vitae. Commodi debitis, eius expedita fugit minima molestias omnis. Cumque iste
+                    libero
+                    recusandae vitae.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores molestiae neque temporibus. A
+                    adipisci, amet, corporis cumque ea eius eligendi error incidunt iure necessitatibus nostrum
+                    quibusdam
+                    quisquam quos sequi voluptas!
+
+                </div>
+            </Slide>
+            <Slide in={state} direction="left">
+                <div style={{background: 'red', overflow: 'hidden'}}>
+                    <Complex />
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
+                    similique, repellendu as dfa sdf as dfa sf as fasds iure earum
+                    dolore, assumenda possimus, praesentium quod ut cumque beatae
+                    voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
+                    aliquam!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dolor esse facilis, porro quae
+                    quaerat quidem vitae. Commodi debitis, eius expedita fugit minima molestias omnis. Cumque iste
+                    libero
+                    recusandae vitae.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores molestiae neque temporibus. A
+                    adipisci, amet, corporis cumque ea eius eligendi error incidunt iure necessitatibus nostrum
+                    quibusdam
+                    quisquam quos sequi voluptas!
+
+                </div>
+            </Slide>
+
+        </div>
+    </div>
+}
 
 function Accordion(
     {
@@ -71,47 +124,6 @@ function Accordion(
     return React.Children.map(children, (el) => {
         return React.cloneElement(el, {id});
     });
-}
-
-export function MotionSimple() {
-    return <div style={{display: 'flex', flexDirection:'column'}}>
-        <Accordion>
-            <SectionMotion title="hello">
-                <img
-                    width="500"
-                    height="500"
-                    src="https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg"
-                ></img>{" "}
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
-                similique, repellendu as dfa sdf as dfa sf as fasds iure earum
-                dolore, assumenda possimus, praesentium quod ut cumque beatae
-                voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
-                aliquam!
-            </SectionMotion>
-            <SectionMotion title="hello2">
-               idem officia debitis veniam laborum accusantium! Ipsam,
-                aliquam!
-            </SectionMotion>
-            <SectionMotion title="hello2">
-                <img
-                    width="500"
-                    height="500"
-                    src="https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg"
-                ></img>{" "}
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
-                similique, repellendu as dfa sdf as dfa sf as fasds iure earum
-                dolore, assumenda possimus, praesentium quod ut cumque beatae
-                voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
-                aliquam!
-            </SectionMotion>
-            <SectionMotion title="small content">
-                dolore, assumenda possimus, praesentium quod ut cumque beatae
-                voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
-                aliquam!
-                <Simple />
-            </SectionMotion>
-        </Accordion>
-    </div>
 }
 
 export function Simple() {
