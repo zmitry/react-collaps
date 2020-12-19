@@ -23,13 +23,9 @@ interface CollapseProps {
     // show or hide element
     in: boolean;
     // max animation duration
-    maxDuration?: number;
+    duration?: number | 'auto';
     // children element should be able to hold a ref on it
     children: ReactElement;
-    // animate speed per content pixel
-    // if content is too small it makes sense to show it faster than bigger content
-    // this prop sets speed per content pixel
-    speedPerPixel?: number;
     // you can replace underlying wrapper but it might break the collapse
     as?: any;
     // do not unmount component on hide
@@ -41,36 +37,15 @@ const makeReducer = ({stateRef, effect, dispatch, onStateChange}) => (state, eve
         return state;
     }
     console.log(`transition from ${state.status}=>${event}`)
-    if (state.animation) {
-        if ((state.status === "entering" || state.status === "entered") && event === "exiting") {
-            state.animation.playbackRate = -1;
-            state.animation.onfinish = () => {
-                dispatch("exited")
-                onStateChange("exited")
-            }
-            onStateChange(event)
-            return {...state, status: event}
-        } else if (state.status === "exiting" && event === "entering") {
-            state.animation.playbackRate = 1;
-            state.animation.onfinish = () => {
-                dispatch("entered")
-                onStateChange("entered")
-            }
-            onStateChange(event)
-            return {...state, status: event}
-        }
-    }
     switch (event) {
         case "appear" : {
             return {status: event}
         }
         case  "entering": {
             onStateChange(event)
-
             let animation = state.animation
-            if(state.animation) {
-                state.animation.playbackRate = -1;
-
+            if (state.animation) {
+                state.animation.playbackRate = 1;
             } else {
                 animation = new Animation(effect(event))
                 animation.play()
@@ -79,26 +54,28 @@ const makeReducer = ({stateRef, effect, dispatch, onStateChange}) => (state, eve
                 if (stateRef.current.status === "exited") {
                     return;
                 }
-                dispatch("exited")
-                onStateChange("exited")
+                onStateChange("entered")
+                dispatch("entered")
             }
-            state.animation?.cancel();
             return {animation, status: event}
         }
         case  "entered": {
             return {...state, status: event}
         }
         case "exiting": {
-            state.animation?.cancel();
-            const animation = new Animation(effect(event))
-            animation.id = "exit"
-            animation.play()
-            animation.playbackRate = -1;
-            animation.onfinish = () => {
-                dispatch("exited")
-                onStateChange("exited")
-            }
             onStateChange(event)
+            let animation = state.animation
+            if (animation) {
+                animation.playbackRate = -1;
+            } else {
+                animation = new Animation(effect(event))
+                animation.play()
+            }
+
+            animation.onfinish = () => {
+                onStateChange("exited")
+                dispatch("exited")
+            }
             return {animation, status: event}
         }
         case  "exited": {
@@ -109,7 +86,8 @@ const makeReducer = ({stateRef, effect, dispatch, onStateChange}) => (state, eve
     throw new Error(`unknown event "${event}"`)
 }
 
-function useAnimation(inProp, effect: (state) => AnimationEffect, onStateChange) {
+function useAnimation(inProp, effect: (state) => AnimationEffect, onStateChange = (v) => {
+}) {
     const stateRef = useRef()
     const dispatchRef = useRef(null)
 
@@ -127,12 +105,12 @@ function useAnimation(inProp, effect: (state) => AnimationEffect, onStateChange)
             onStateChange("beforeenter")
             dispatch("entering");
         } else if (inProp && (status === "exited" || state.status === "exiting") && status !== "entering") {
-            if(status !== "exiting") {
+            if (status !== "exiting") {
                 onStateChange("beforeenter")
             }
             dispatch("entering")
         } else if (!inProp && (status === "entering" || status === "entered") && status !== "exiting") {
-            if(status !== "entering") {
+            if (status !== "entering") {
                 onStateChange("beforeexit")
             }
             dispatch("exiting")
@@ -144,22 +122,25 @@ function useAnimation(inProp, effect: (state) => AnimationEffect, onStateChange)
 export function Collapse({
                              as: AS = "div",
                              children,
-                             maxDuration = 500,
+                             duration = 'auto',
                              in: inProp,
-                             speedPerPixel = 1,
                              keepMounted = false
                          }: CollapseProps) {
     const ref = useRef<HTMLElement>(null);
-    const [{status}, dispatch] = useAnimation(inProp, (status) => {
+    const [{status}, dispatch] = useAnimation(inProp, () => {
         const el = ref.current;
         const height = el.clientHeight
         let key = [
             {height: '0', opacity: 0},
-            {height: 'var(--height)', opacity: 1, offset: 0.8}
+            {height: 'var(--height)', opacity: 1}
         ]
         return new KeyframeEffect(
             ref.current, // element to animate
-            key, {duration: getAutoTimeout(height), fill: 'none'}
+            key, {
+                duration: duration === 'auto' ? getAutoTimeout(height) : duration,
+                fill: 'none',
+                easing: "ease-in-out"
+            }
         );
     }, (status) => {
         if (status === "beforeexit" || status === "beforeenter") {
@@ -180,13 +161,10 @@ export function Collapse({
     }
     return (
         <AS
-            style={
-                {
-                    overflow: "hidden",
-                    height: status === "exited" ? "0px" : "auto",
-                } as any
-            }
-
+            style={{
+                overflow: "hidden",
+                height: status === "exited" ? "0px" : "auto",
+            } as any}
         >
             <div ref={ref} style={status === "appear" ? {position: 'absolute', visibility: 'hidden'} : {}}>
                 {children}

@@ -89,6 +89,10 @@ export function MotionSimple() {
                 aliquam!
             </SectionMotion>
             <SectionMotion title="hello2">
+               idem officia debitis veniam laborum accusantium! Ipsam,
+                aliquam!
+            </SectionMotion>
+            <SectionMotion title="hello2">
                 <img
                     width="500"
                     height="500"
@@ -104,6 +108,7 @@ export function MotionSimple() {
                 dolore, assumenda possimus, praesentium quod ut cumque beatae
                 voluptate quidem officia debitis veniam laborum accusantium! Ipsam,
                 aliquam!
+                <Simple />
             </SectionMotion>
         </Accordion>
     </div>
