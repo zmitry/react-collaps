@@ -9,6 +9,7 @@
     "url": "https://github.com/zmitry/react-collaps"
   },
   "scripts": {
+    "start": "node ./build --develop",
     "preview": "node ./build --preview",
     "build": "yarn tsc && node ./build"
   },
