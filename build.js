@@ -1,7 +1,7 @@
 const { build, serve } = require("esbuild");
 
 const env = {
-  "process.env.NODE_ENV": '"development"',
+  "process.env.NODE_ENV": `"${process.env.NODE_ENV || "development"}"`,
 };
 
 
@@ -38,6 +38,7 @@ if (process.argv.includes("--develop")) {
     outfile: "./preview-build/index.js",
     bundle: true,
     target: "es2015",
+    metafile: "./preview-build/meta.json",
     format: "esm",
     sourcemap: "inline",
   }).then(console.log,onError);
@@ -46,7 +47,7 @@ if (process.argv.includes("--develop")) {
     entryPoints: ["./src/index.tsx"],
     minify: false,
     define: {
-      "process.env.NODE_ENV": '"development"',
+      "process.env.NODE_ENV": '"production"',
     },
     outfile: "./build/index.js",
     bundle: true,
